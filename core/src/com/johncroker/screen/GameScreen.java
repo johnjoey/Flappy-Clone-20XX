@@ -9,6 +9,7 @@ import com.johncroker.gameworld.GameWorld;
 public class GameScreen implements Screen {
 	private GameWorld world;
 	private GameRenderer renderer;
+	private float runTime = 0;
 
 	public GameScreen() {
 		Gdx.app.log("GameScreen", "constructor");
@@ -21,7 +22,7 @@ public class GameScreen implements Screen {
 		int midPointY = (int) (gameHeight / 2);
 
 		world = new GameWorld(midPointY);
-		renderer = new GameRenderer(world);
+		renderer = new GameRenderer(world, (int) gameHeight, midPointY);
 
 		Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
 	}
@@ -33,8 +34,9 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		runTime += delta;
 		world.update(delta);
-		renderer.render();
+		renderer.render(runTime);
 
 	}
 
