@@ -1,9 +1,11 @@
 package com.johncroker.fchelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
@@ -13,7 +15,13 @@ public class AssetLoader {
 	public static Animation birdAnimation;
 	public static TextureRegion bird, birdDown, birdUp;
 
-	public static TextureRegion skullUp, skullDown, bar;
+	public static TextureRegion skullUp, skullDown, pipeBody;
+
+	public static Sound dead;
+	public static Sound coin;
+	public static Sound flap;
+
+	public static BitmapFont font, shadow;
 
 	public static void load() {
 		spriteSheet = new Texture(Gdx.files.internal("data/texture.png"));
@@ -42,11 +50,22 @@ public class AssetLoader {
 		skullDown = new TextureRegion(skullUp);
 		skullUp.flip(false, true);
 
-		bar = new TextureRegion(spriteSheet, 136, 16, 22, 3);
-		bar.flip(false, true);
+		pipeBody = new TextureRegion(spriteSheet, 136, 16, 22, 3);
+		pipeBody.flip(false, true);
+
+		dead = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
+		flap = Gdx.audio.newSound(Gdx.files.internal("data/flap.wav"));
+		coin = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
+
+		font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
+		font.getData().setScale(.25f, -.25f);
+		shadow = new BitmapFont(Gdx.files.internal("data/shadow.fnt"));
+		shadow.getData().setScale(.25f, -.25f);
 	}
 
 	public static void dispose() {
 		spriteSheet.dispose();
+		font.dispose();
+		font.dispose();
 	}
 }
