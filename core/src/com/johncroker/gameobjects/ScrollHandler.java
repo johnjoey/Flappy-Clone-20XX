@@ -21,6 +21,16 @@ public class ScrollHandler {
 		pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED, yPos);
 	}
 
+	public void updateReady(float delta) {
+		grass1.update(delta);
+		grass2.update(delta);
+		if (grass1.isOffScreen()) {
+			grass1.reset(grass2.getTailX());
+		} else if (grass2.isOffScreen()) {
+			grass2.reset(grass1.getTailX());
+		}
+	}
+
 	public void update(float delta) {
 		grass1.update(delta);
 		grass2.update(delta);
@@ -70,6 +80,14 @@ public class ScrollHandler {
 		}
 
 		return (pipe1.collides(bird) || pipe2.collides(bird) || pipe3.collides(bird));
+	}
+
+	public void onRestart() {
+		grass1.onRestart(0, SCROLL_SPEED);
+		grass2.onRestart(grass1.getTailX(), SCROLL_SPEED);
+		pipe1.onRestart(210, SCROLL_SPEED);
+		pipe2.onRestart(pipe1.getTailX() + PIPE_GAP, SCROLL_SPEED);
+		pipe3.onRestart(pipe2.getTailX() + PIPE_GAP, SCROLL_SPEED);
 	}
 
 	private void addScore(int increment) {

@@ -12,17 +12,22 @@ public class Bird {
 	private float rotation;
 	private int width;
 	private int height;
+
 	private Circle hitBox;
 
-	private boolean isAlive = true;
+	private boolean isAlive;
+
+	private float originalY;
 
 	public Bird(float x, float y, int width, int height) {
 		this.width = width;
 		this.height = height;
+		this.originalY = y;
 		position = new Vector2(x, y);
 		velocity = new Vector2(0, 0);
 		acceleration = new Vector2(0, 460);
 		hitBox = new Circle();
+		this.isAlive = true;
 	}
 
 	public void update(float delta) {
@@ -32,12 +37,14 @@ public class Bird {
 			velocity.y = 200;
 		}
 
+		// CHECK IF HIT TOP OF GAMESCREEN
 		if (position.y < -13) {
 			position.y = -13;
 			velocity.y = 0;
 		}
 
 		position.add(velocity.cpy().scl(delta));
+
 		hitBox.set(position.x + 9, position.y + 6, 6.5f);
 
 		// rotate counterclockwise
@@ -58,6 +65,16 @@ public class Bird {
 		}
 	}
 
+	public void onRestart(int y) {
+		rotation = 0;
+		position.y = y;
+		velocity.x = 0;
+		velocity.y = 0;
+		acceleration.x = 0;
+		acceleration.y = 460;
+		isAlive = true;
+	}
+
 	public Circle getHitBox() {
 		return hitBox;
 	}
@@ -75,6 +92,10 @@ public class Bird {
 
 	public void decelerate() {
 		acceleration.y = 0;
+	}
+
+	public void updateReady(float runTime) {
+		position.y = 2 * (float) Math.sin(7 * runTime) + originalY;
 	}
 
 	public boolean isFalling() {

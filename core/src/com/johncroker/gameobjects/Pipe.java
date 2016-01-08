@@ -34,6 +34,11 @@ public class Pipe extends Scrollable {
 		isScored = false;
 	}
 
+	public void onRestart(float x, float scrollSpeed) {
+		velocity.x = scrollSpeed;
+		reset(x);
+	}
+
 	public boolean isScored() {
 		return isScored;
 	}

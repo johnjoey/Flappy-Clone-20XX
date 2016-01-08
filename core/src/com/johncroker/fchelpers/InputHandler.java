@@ -1,13 +1,37 @@
 package com.johncroker.fchelpers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.InputProcessor;
 import com.johncroker.gameobjects.Bird;
+import com.johncroker.gameworld.GameWorld;
+import com.johncroker.ui.Button;
 
 public class InputHandler implements InputProcessor {
-	private Bird myBird;
+	private Bird bird;
+	private GameWorld worldInstance;
 
-	public InputHandler(Bird bird) {
-		myBird = bird;
+	private List<Button> menuButtons;
+
+	private Button playButton;
+
+	private float scaleFactorX;
+	private float scaleFactorY;
+
+	public InputHandler(GameWorld wi, float scaleFactorX, float scaleFactorY) {
+		this.worldInstance = wi;
+		bird = worldInstance.getBird();
+
+		int midPointY = worldInstance.getMidPointY();
+
+		this.scaleFactorX = scaleFactorX;
+		this.scaleFactorY = scaleFactorY;
+
+		menuButtons = new ArrayList<Button>();
+		playButton = new Button(136 / 2 - (AssetLoader.playButtonUp.getRegionWidth() / 2), midPointY + 50, 29, 16,
+				AssetLoader.playButtonUp, AssetLoader.playButtonDown);
+		menuButtons.add(playButton);
 	}
 
 	@Override
@@ -30,14 +54,48 @@ public class InputHandler implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		myBird.onClick();
+		int x = scaleX(screenX);
+		int y = scaleY(screenY);
+		if (worldInstance.isMenu()) {
+			playButton.isTouchDown(x, y);
+		} else if (worldInstance.isReady()) {
+			worldInstance.start();
+		}
+
+		bird.onClick();
+
+		if (worldInstance.isGameOver() || worldInstance.isHighScore()) {
+			worldInstance.restart();
+		}
+
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		screenX = scaleX(screenX);
+		screenY = scaleY(screenY);
+
+		if (worldInstance.isMenu()) {
+			if (playButton.isTouchUp(screenX, screenY)) {
+				worldInstance.ready();
+				return true;
+			}
+		}
+
 		return false;
+	}
+
+	private int scaleX(int screenX) {
+		return (int) (screenX / scaleFactorX);
+	}
+
+	private int scaleY(int screenY) {
+		return (int) (screenY / scaleFactorY);
+	}
+
+	public List<Button> getMenuButtons() {
+		return menuButtons;
 	}
 
 	@Override

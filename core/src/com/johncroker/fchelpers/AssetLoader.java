@@ -1,6 +1,7 @@
 package com.johncroker.fchelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -9,13 +10,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
-	public static Texture spriteSheet;
-	public static TextureRegion bg, grass;
+	public static Texture spriteSheet, kiloboltLogoSprite;
+	public static TextureRegion gameLogo, kiloboltLogo, playButtonUp, playButtonDown, bg, grass, skullUp, skullDown,
+			pipeBody, bird, birdDown, birdUp;
 
 	public static Animation birdAnimation;
-	public static TextureRegion bird, birdDown, birdUp;
-
-	public static TextureRegion skullUp, skullDown, pipeBody;
 
 	public static Sound dead;
 	public static Sound coin;
@@ -23,9 +22,28 @@ public class AssetLoader {
 
 	public static BitmapFont font, shadow;
 
+	private static Preferences prefs;
+
 	public static void load() {
+		// LOADING SPLASH SCREENS
+		kiloboltLogoSprite = new Texture(Gdx.files.internal("data/kilologothank.png"));
+		kiloboltLogoSprite.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		kiloboltLogo = new TextureRegion(kiloboltLogoSprite, 0, 0, 501, 200);
+
+		// LOADING MENU ASSETS
 		spriteSheet = new Texture(Gdx.files.internal("data/texture.png"));
 		spriteSheet.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
+		playButtonUp = new TextureRegion(spriteSheet, 0, 83, 29, 16);
+		playButtonDown = new TextureRegion(spriteSheet, 29, 83, 29, 16);
+		playButtonUp.flip(false, true);
+		playButtonDown.flip(false, true);
+
+		gameLogo = new TextureRegion(spriteSheet, 0, 55, 135, 24);
+		gameLogo.flip(false, true);
+
+		// LOADING INGAME ASSETS
 
 		bg = new TextureRegion(spriteSheet, 0, 0, 136, 43);
 		bg.flip(false, true);
@@ -61,11 +79,25 @@ public class AssetLoader {
 		font.getData().setScale(.25f, -.25f);
 		shadow = new BitmapFont(Gdx.files.internal("data/shadow.fnt"));
 		shadow.getData().setScale(.25f, -.25f);
+
+		prefs = Gdx.app.getPreferences("FlappyClone");
+
+		if (!prefs.contains("highscore")) {
+			prefs.putInteger("highscore", 0);
+		}
 	}
 
 	public static void dispose() {
 		spriteSheet.dispose();
 		font.dispose();
 		font.dispose();
+	}
+
+	public static void setHighScore(int score) {
+		prefs.putInteger("highscore", score);
+	}
+
+	public static int getHighScore() {
+		return prefs.getInteger("highscore");
 	}
 }

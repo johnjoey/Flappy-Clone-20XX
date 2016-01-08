@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.johncroker.fchelpers.AssetLoader;
-import com.johncroker.screen.GameScreen;
+import com.johncroker.screen.SplashScreen;
 
 public class FCGame extends Game {
 	SpriteBatch batch;
@@ -15,7 +15,7 @@ public class FCGame extends Game {
 	public void create() {
 		Gdx.app.log("FCGame", "created");
 		AssetLoader.load();
-		setScreen(new GameScreen());
+		setScreen(new SplashScreen(this));
 	}
 
 	@Override
