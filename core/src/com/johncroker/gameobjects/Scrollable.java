@@ -57,4 +57,8 @@ public class Scrollable {
 	public int getHeight() {
 		return height;
 	}
+
+	public void setVelocity(float scrollSpeed) {
+		velocity.x = scrollSpeed;
+	}
 }

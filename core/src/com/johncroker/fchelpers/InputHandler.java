@@ -15,6 +15,7 @@ public class InputHandler implements InputProcessor {
 	private List<Button> menuButtons;
 
 	private Button playButton;
+	private Button boostButton;
 
 	private float scaleFactorX;
 	private float scaleFactorY;
@@ -31,7 +32,12 @@ public class InputHandler implements InputProcessor {
 		menuButtons = new ArrayList<Button>();
 		playButton = new Button(136 / 2 - (AssetLoader.playButtonUp.getRegionWidth() / 2), midPointY + 50, 29, 16,
 				AssetLoader.playButtonUp, AssetLoader.playButtonDown);
+		boostButton = new Button(136 / 2 - (AssetLoader.boostButtonUp.getRegionWidth() / 2), midPointY + 70, 29, 16,
+				AssetLoader.boostButtonUp, AssetLoader.boostButtonDown);
+
 		menuButtons.add(playButton);
+		menuButtons.add(boostButton);
+
 	}
 
 	@Override
@@ -60,6 +66,10 @@ public class InputHandler implements InputProcessor {
 			playButton.isTouchDown(x, y);
 		} else if (worldInstance.isReady()) {
 			worldInstance.start();
+		} else if (worldInstance.isRunning()) {
+			if (boostButton.isTouchDown(x, y)) {
+				worldInstance.setSlowmo(true);
+			}
 		}
 
 		bird.onClick();
@@ -79,6 +89,11 @@ public class InputHandler implements InputProcessor {
 		if (worldInstance.isMenu()) {
 			if (playButton.isTouchUp(screenX, screenY)) {
 				worldInstance.ready();
+				return true;
+			}
+		} else if (worldInstance.isRunning()) {
+			if (boostButton.isTouchUp(screenX, screenY)) {
+				worldInstance.setSlowmo(false);
 				return true;
 			}
 		}

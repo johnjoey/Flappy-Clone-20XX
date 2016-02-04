@@ -13,6 +13,8 @@ public class Bird {
 	private int width;
 	private int height;
 
+	private boolean isSlowmo = false;
+
 	private Circle hitBox;
 
 	private boolean isAlive;
@@ -32,6 +34,10 @@ public class Bird {
 
 	public void update(float delta) {
 		velocity.add(acceleration.cpy().scl(delta));
+
+		if (isSlowmo) {
+			velocity.y /= 2;
+		}
 
 		if (velocity.y > 200) {
 			velocity.y = 200;
@@ -128,5 +134,9 @@ public class Bird {
 
 	public float getRotation() {
 		return rotation;
+	}
+
+	public void setSlowmo(boolean state) {
+		isSlowmo = state;
 	}
 }

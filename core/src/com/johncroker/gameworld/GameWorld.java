@@ -13,6 +13,7 @@ public class GameWorld {
 	private int score = 0;
 	private float runTime = 0;
 	private int midPointY;
+	private int slowmo = 1;
 
 	public enum GameState {
 		MENU, READY, RUNNING, GAMEOVER, HIGHSCORE;
@@ -60,6 +61,8 @@ public class GameWorld {
 			scroller.stop();
 			bird.die();
 			AssetLoader.dead.play();
+
+			AssetLoader.fall.play();
 		}
 
 		if (Intersector.overlaps(bird.getHitBox(), ground)) {
@@ -129,6 +132,12 @@ public class GameWorld {
 
 	public void addScore(int increment) {
 		score += increment;
+	}
+
+	public void setSlowmo(boolean state) {
+		// scroller.setSlowmo(state);
+		// bird.setSlowmo(state);
+
 	}
 
 }

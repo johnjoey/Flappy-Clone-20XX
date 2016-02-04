@@ -33,19 +33,20 @@ public class GameRenderer {
 	private SpriteBatch batcher;
 
 	private int midPointY;
-	private int gameHeight;
 
 	// GAME OBJECTS
 	private Bird bird;
 	private ScrollHandler scroller;
 	private Grass frontGrass, backGrass;
 	private Pipe pipe1, pipe2, pipe3;
+	private Button boostButton;
 
 	// GAME ASSETS
 	private TextureRegion bg, grass;
 	private Animation birdAnimation;
 	private TextureRegion birdMid, birdDown, birdUp;
 	private TextureRegion skullUp, skullDown, pipeBody;
+	private TextureRegion boostButtonUp, boostButtonDown;
 
 	// TWEEN CRAP
 	private TweenManager manager;
@@ -57,11 +58,10 @@ public class GameRenderer {
 	public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
 		worldInstance = world;
 
-		this.gameHeight = gameHeight;
 		this.midPointY = midPointY;
 		this.menuButtons = ((InputHandler) Gdx.input.getInputProcessor()).getMenuButtons();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(true, 136, 204);
+		camera.setToOrtho(true, 136, gameHeight);
 
 		batcher = new SpriteBatch();
 		batcher.setProjectionMatrix(camera.combined);
@@ -107,15 +107,18 @@ public class GameRenderer {
 		if (worldInstance.isRunning()) {
 			drawBird(runTime);
 			drawScore();
+			drawUI();
 		} else if (worldInstance.isReady()) {
 			drawBird(runTime);
 			drawScore();
+			drawUI();
 		} else if (worldInstance.isMenu()) {
 			drawBirdCentered(runTime);
 			drawMenuUI();
 		} else if (worldInstance.isGameOver()) {
 			drawBird(runTime);
 			drawScore();
+			drawUI();
 		} else if (worldInstance.isHighScore()) {
 			drawBird(runTime);
 			drawScore();
@@ -148,6 +151,7 @@ public class GameRenderer {
 	private void initGameObjects() {
 		bird = worldInstance.getBird();
 		scroller = worldInstance.getScroller();
+
 		frontGrass = scroller.getGrass1();
 		backGrass = scroller.getGrass2();
 		pipe1 = scroller.getPipe1();
@@ -165,6 +169,8 @@ public class GameRenderer {
 		skullUp = AssetLoader.skullUp;
 		skullDown = AssetLoader.skullDown;
 		pipeBody = AssetLoader.pipeBody;
+		boostButtonUp = AssetLoader.boostButtonUp;
+		boostButtonDown = AssetLoader.boostButtonDown;
 	}
 
 	private void drawGrass() {
@@ -174,8 +180,6 @@ public class GameRenderer {
 	}
 
 	private void drawSkulls() {
-		// Temporary code! Sorry about the mess :)
-		// We will fix this when we finish the Pipe class.
 
 		batcher.draw(skullDown, pipe1.getX() - 1, pipe1.getY() + pipe1.getHeight() - 14, 24, 14);
 		batcher.draw(skullUp, pipe1.getX() - 1, pipe1.getY() + pipe1.getHeight() + 45, 24, 14);
@@ -188,8 +192,7 @@ public class GameRenderer {
 	}
 
 	private void drawPipes() {
-		// Temporary code! Sorry about the mess :)
-		// We will fix this when we finish the Pipe class.
+
 		batcher.draw(pipeBody, pipe1.getX(), pipe1.getY(), pipe1.getWidth(), pipe1.getHeight());
 		batcher.draw(pipeBody, pipe1.getX(), pipe1.getY() + pipe1.getHeight() + 45, pipe1.getWidth(),
 				midPointY + 66 - (pipe1.getHeight() + 45));
@@ -221,13 +224,15 @@ public class GameRenderer {
 
 	}
 
+	private void drawUI() {
+		menuButtons.get(1).draw(batcher);
+	}
+
 	private void drawMenuUI() {
 		batcher.draw(AssetLoader.gameLogo, 136 / 2 - 56, midPointY - 50, AssetLoader.gameLogo.getRegionWidth() / 1.2f,
 				AssetLoader.gameLogo.getRegionHeight() / 1.2f);
 
-		for (Button button : menuButtons) {
-			button.draw(batcher);
-		}
+		menuButtons.get(0).draw(batcher);
 
 	}
 

@@ -11,14 +11,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 	public static Texture spriteSheet, kiloboltLogoSprite;
-	public static TextureRegion gameLogo, kiloboltLogo, playButtonUp, playButtonDown, bg, grass, skullUp, skullDown,
-			pipeBody, bird, birdDown, birdUp;
+	public static TextureRegion gameLogo, kiloboltLogo, playButtonUp, playButtonDown, boostButtonUp, boostButtonDown,
+			bg, grass, skullUp, skullDown, pipeBody, bird, birdDown, birdUp;
 
 	public static Animation birdAnimation;
 
-	public static Sound dead;
-	public static Sound coin;
-	public static Sound flap;
+	public static Sound dead, coin, flap, fall;
 
 	public static BitmapFont font, shadow;
 
@@ -39,6 +37,11 @@ public class AssetLoader {
 		playButtonDown = new TextureRegion(spriteSheet, 29, 83, 29, 16);
 		playButtonUp.flip(false, true);
 		playButtonDown.flip(false, true);
+
+		boostButtonUp = new TextureRegion(spriteSheet, 58, 83, 29, 16);
+		boostButtonDown = new TextureRegion(spriteSheet, 87, 83, 29, 16);
+		boostButtonUp.flip(false, true);
+		boostButtonDown.flip(false, true);
 
 		gameLogo = new TextureRegion(spriteSheet, 0, 55, 135, 24);
 		gameLogo.flip(false, true);
@@ -74,6 +77,7 @@ public class AssetLoader {
 		dead = Gdx.audio.newSound(Gdx.files.internal("data/dead.wav"));
 		flap = Gdx.audio.newSound(Gdx.files.internal("data/flap.wav"));
 		coin = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
+		fall = Gdx.audio.newSound(Gdx.files.internal("data/fall.wav"));
 
 		font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
 		font.getData().setScale(.25f, -.25f);
@@ -90,11 +94,16 @@ public class AssetLoader {
 	public static void dispose() {
 		spriteSheet.dispose();
 		font.dispose();
-		font.dispose();
+		shadow.dispose();
+		dead.dispose();
+		coin.dispose();
+		flap.dispose();
+		fall.dispose();
 	}
 
 	public static void setHighScore(int score) {
 		prefs.putInteger("highscore", score);
+		prefs.flush();
 	}
 
 	public static int getHighScore() {

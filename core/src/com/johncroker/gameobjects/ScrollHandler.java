@@ -8,6 +8,7 @@ public class ScrollHandler {
 	private Pipe pipe1, pipe2, pipe3;
 	private GameWorld worldInstance;
 
+	public static final int SLOWMO_SCROLL_SPEED = -30;
 	public static final int SCROLL_SPEED = -59;
 	public static final int PIPE_GAP = 49;
 
@@ -112,6 +113,23 @@ public class ScrollHandler {
 
 	public Pipe getPipe3() {
 		return pipe3;
+	}
+
+	public void setSlowmo(Boolean state) {
+		if (state) {
+			grass1.setVelocity(SLOWMO_SCROLL_SPEED);
+			grass2.setVelocity(SLOWMO_SCROLL_SPEED);
+			pipe1.setVelocity(SLOWMO_SCROLL_SPEED);
+			pipe2.setVelocity(SLOWMO_SCROLL_SPEED);
+			pipe3.setVelocity(SLOWMO_SCROLL_SPEED);
+		} else {
+			grass1.setVelocity(SCROLL_SPEED);
+			grass2.setVelocity(SCROLL_SPEED);
+			pipe1.setVelocity(SCROLL_SPEED);
+			pipe2.setVelocity(SCROLL_SPEED);
+			pipe3.setVelocity(SCROLL_SPEED);
+		}
+
 	}
 
 }
