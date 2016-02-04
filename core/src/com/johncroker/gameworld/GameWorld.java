@@ -135,9 +135,8 @@ public class GameWorld {
 	}
 
 	public void setSlowmo(boolean state) {
-		// scroller.setSlowmo(state);
-		// bird.setSlowmo(state);
-
+		bird.setSlowmo(state);
+		scroller.setSlowmo(state);
 	}
 
 }

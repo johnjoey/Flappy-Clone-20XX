@@ -8,7 +8,7 @@ public class ScrollHandler {
 	private Pipe pipe1, pipe2, pipe3;
 	private GameWorld worldInstance;
 
-	public static final int SLOWMO_SCROLL_SPEED = -30;
+	public static final int SLOWMO_SCROLL_SPEED = -20;
 	public static final int SCROLL_SPEED = -59;
 	public static final int PIPE_GAP = 49;
 

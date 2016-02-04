@@ -35,10 +35,6 @@ public class Bird {
 	public void update(float delta) {
 		velocity.add(acceleration.cpy().scl(delta));
 
-		if (isSlowmo) {
-			velocity.y /= 2;
-		}
-
 		if (velocity.y > 200) {
 			velocity.y = 200;
 		}
@@ -137,6 +133,9 @@ public class Bird {
 	}
 
 	public void setSlowmo(boolean state) {
-		isSlowmo = state;
+		if (state)
+			acceleration.y = 2;
+		else
+			acceleration.y = 460;
 	}
 }

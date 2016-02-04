@@ -3,6 +3,8 @@ package com.johncroker.gameworld;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.Array;
 import com.johncroker.fchelpers.AssetLoader;
 import com.johncroker.fchelpers.InputHandler;
 import com.johncroker.gameobjects.Bird;
@@ -59,7 +62,10 @@ public class GameRenderer {
 		worldInstance = world;
 
 		this.midPointY = midPointY;
-		this.menuButtons = ((InputHandler) Gdx.input.getInputProcessor()).getMenuButtons();
+
+		InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
+		Array<InputProcessor> ipList = im.getProcessors();
+		this.menuButtons = ((InputHandler) ipList.get(1)).getMenuButtons();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true, 136, gameHeight);
 
@@ -107,18 +113,18 @@ public class GameRenderer {
 		if (worldInstance.isRunning()) {
 			drawBird(runTime);
 			drawScore();
-			drawUI();
+			// drawUI();
 		} else if (worldInstance.isReady()) {
 			drawBird(runTime);
 			drawScore();
-			drawUI();
+			// drawUI();
 		} else if (worldInstance.isMenu()) {
 			drawBirdCentered(runTime);
 			drawMenuUI();
 		} else if (worldInstance.isGameOver()) {
 			drawBird(runTime);
 			drawScore();
-			drawUI();
+			// drawUI();
 		} else if (worldInstance.isHighScore()) {
 			drawBird(runTime);
 			drawScore();

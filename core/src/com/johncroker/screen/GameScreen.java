@@ -1,7 +1,10 @@
 package com.johncroker.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.input.GestureDetector;
 import com.johncroker.fchelpers.InputHandler;
 import com.johncroker.gameworld.GameRenderer;
 import com.johncroker.gameworld.GameWorld;
@@ -22,7 +25,18 @@ public class GameScreen implements Screen {
 		int midPointY = (int) (gameHeight / 2);
 
 		world = new GameWorld(midPointY);
-		Gdx.input.setInputProcessor(new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight));
+
+		InputMultiplexer im = new InputMultiplexer();
+		InputHandler ih = new InputHandler(world, screenWidth / gameWidth, screenHeight / gameHeight);
+		InputProcessor ip = ih;
+		GestureDetector gd = new GestureDetector(ih);
+
+		gd.setLongPressSeconds(0.4f); // length of press before registered
+
+		im.addProcessor(gd);
+		im.addProcessor(ip);
+		Gdx.input.setInputProcessor(im);
+
 		renderer = new GameRenderer(world, (int) gameHeight, midPointY);
 	}
 
