@@ -22,11 +22,17 @@ public class InputHandler implements GestureListener, InputProcessor {
 	private float scaleFactorX;
 	private float scaleFactorY;
 
+	private Vector2 boostDirection;
+	private boolean isAiming;
+
 	public InputHandler(GameWorld wi, float scaleFactorX, float scaleFactorY) {
 		this.worldInstance = wi;
 		bird = worldInstance.getBird();
 
 		int midPointY = worldInstance.getMidPointY();
+
+		boostDirection = new Vector2(0, 0);
+		isAiming = false;
 
 		this.scaleFactorX = scaleFactorX;
 		this.scaleFactorY = scaleFactorY;
@@ -47,12 +53,10 @@ public class InputHandler implements GestureListener, InputProcessor {
 		int x = scaleX(screenX);
 		int y = scaleY(screenY);
 		if (worldInstance.isMenu()) {
-			playButton.isTouchDown(x, y);
+			playButton.isTouchDown(x, y); // make play button appear clicked
 		} else if (worldInstance.isReady()) {
 			worldInstance.start();
 		}
-
-		bird.onClick();
 
 		if (worldInstance.isGameOver() || worldInstance.isHighScore()) {
 			worldInstance.restart();
@@ -68,19 +72,25 @@ public class InputHandler implements GestureListener, InputProcessor {
 
 		if (worldInstance.isMenu()) {
 			if (playButton.isTouchUp(screenX, screenY)) {
-				worldInstance.ready();
+				worldInstance.ready(); // START GAME
 				return true;
 			}
-		}
+		} else if (worldInstance.isRunning()) {
 
-		worldInstance.setSlowmo(false);
+			worldInstance.setSlowmo(false);
+
+			bird.onClick();
+
+			return true;
+
+		}
 
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 

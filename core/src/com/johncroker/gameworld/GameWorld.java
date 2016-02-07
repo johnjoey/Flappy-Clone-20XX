@@ -2,6 +2,7 @@ package com.johncroker.gameworld;
 
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.johncroker.fchelpers.AssetLoader;
 import com.johncroker.gameobjects.Bird;
 import com.johncroker.gameobjects.ScrollHandler;
@@ -13,7 +14,11 @@ public class GameWorld {
 	private int score = 0;
 	private float runTime = 0;
 	private int midPointY;
-	private int slowmo = 1;
+
+	private boolean isSlowmo = false;
+	private boolean isAiming = false;
+	private boolean isBoosting = false;
+	private Vector2 boostDirection;
 
 	public enum GameState {
 		MENU, READY, RUNNING, GAMEOVER, HIGHSCORE;
@@ -27,6 +32,7 @@ public class GameWorld {
 		bird = new Bird(33, midPointY - 5, 17, 12);
 		scroller = new ScrollHandler(midPointY + 66, this);
 		ground = new Rectangle(0, midPointY + 66, 136, 11);
+		boostDirection = new Vector2(0, 0);
 	}
 
 	public void update(float delta) {
@@ -135,8 +141,11 @@ public class GameWorld {
 	}
 
 	public void setSlowmo(boolean state) {
-		bird.setSlowmo(state);
-		scroller.setSlowmo(state);
+		this.isSlowmo = state;
+	}
+
+	public boolean isSlowmo() {
+		return isSlowmo;
 	}
 
 }

@@ -112,6 +112,7 @@ public class GameRenderer {
 
 		if (worldInstance.isRunning()) {
 			drawBird(runTime);
+			// drawAimingVector(worldInstance.getBoostDirection());
 			drawScore();
 			// drawUI();
 		} else if (worldInstance.isReady()) {
@@ -134,6 +135,19 @@ public class GameRenderer {
 		drawTransition(delta);
 	}
 
+	/*
+	 * private void drawAimingVector(Vector2 boostDirection) { if
+	 * (worldInstance.isAiming()) { sr.begin(ShapeType.Line);
+	 * 
+	 * sr.setColor(Color.RED); sr.line(bird.getPos(),
+	 * worldInstance.getBoostDirection()); Gdx.app.log("GameRenderer",
+	 * "boost dir (" + worldInstance.getBoostDirection().x + ", " +
+	 * worldInstance.getBoostDirection().y + ")");
+	 * 
+	 * sr.end(); }
+	 * 
+	 * }
+	 */
 	private void drawTransition(float delta) {
 		if (alpha.getValue() > 0) {
 			manager.update(delta);

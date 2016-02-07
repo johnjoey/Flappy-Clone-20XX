@@ -33,7 +33,17 @@ public class Bird {
 	}
 
 	public void update(float delta) {
-		velocity.add(acceleration.cpy().scl(delta));
+
+		if (isSlowmo) {
+			if (velocity.y > 2) {
+				velocity.y -= 25;
+				if (velocity.y < 2) {
+					velocity.y = 2;
+				}
+			}
+		} else {
+			velocity.add(acceleration.cpy().scl(delta));
+		}
 
 		if (velocity.y > 200) {
 			velocity.y = 200;
@@ -120,6 +130,10 @@ public class Bird {
 		return position.y;
 	}
 
+	public Vector2 getPos() {
+		return position;
+	}
+
 	public float getWidth() {
 		return width;
 	}
@@ -133,9 +147,12 @@ public class Bird {
 	}
 
 	public void setSlowmo(boolean state) {
-		if (state)
-			acceleration.y = 2;
-		else
-			acceleration.y = 460;
+		isSlowmo = state;
 	}
+
+	public void boost(Vector2 boostDirection) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

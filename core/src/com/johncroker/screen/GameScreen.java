@@ -13,6 +13,8 @@ public class GameScreen implements Screen {
 	private GameWorld world;
 	private GameRenderer renderer;
 	private float runTime = 0;
+	public static final float slowmoSpeed = 0.05f;
+	public static final float boostSpeed = 1.5f;
 
 	public GameScreen() {
 		Gdx.app.log("GameScreen", "constructor");
@@ -31,7 +33,7 @@ public class GameScreen implements Screen {
 		InputProcessor ip = ih;
 		GestureDetector gd = new GestureDetector(ih);
 
-		gd.setLongPressSeconds(0.4f); // length of press before registered
+		gd.setLongPressSeconds(0.2f); // length of press before registered
 
 		im.addProcessor(gd);
 		im.addProcessor(ip);
@@ -48,6 +50,14 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		runTime += delta;
+
+		if (world.isSlowmo()) {
+			delta *= slowmoSpeed;
+		}
+		/*
+		 * else if (world.isBoost()) { delta *= boostSpeed; }
+		 */
+
 		world.update(delta);
 		renderer.render(delta, runTime);
 
