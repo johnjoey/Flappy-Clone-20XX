@@ -51,12 +51,9 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		runTime += delta;
 
-		if (world.isSlowmo()) {
+		if (world.isAiming()) {
 			delta *= slowmoSpeed;
 		}
-		/*
-		 * else if (world.isBoost()) { delta *= boostSpeed; }
-		 */
 
 		world.update(delta);
 		renderer.render(delta, runTime);

@@ -30,11 +30,11 @@ public class AssetLoader {
 		kiloboltLogo = new TextureRegion(kiloboltLogoSprite, 0, 0, 501, 200);
 
 		// LOADING MENU ASSETS
-		spriteSheet = new Texture(Gdx.files.internal("data/texture.png"));
+		spriteSheet = new Texture(Gdx.files.internal("data/texture2.png"));
 		spriteSheet.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-		playButtonUp = new TextureRegion(spriteSheet, 0, 83, 29, 16);
-		playButtonDown = new TextureRegion(spriteSheet, 29, 83, 29, 16);
+		playButtonUp = new TextureRegion(spriteSheet, 1, 85, 28, 12);
+		playButtonDown = new TextureRegion(spriteSheet, 30, 85, 28, 12);
 		playButtonUp.flip(false, true);
 		playButtonDown.flip(false, true);
 
@@ -43,7 +43,7 @@ public class AssetLoader {
 		boostButtonUp.flip(false, true);
 		boostButtonDown.flip(false, true);
 
-		gameLogo = new TextureRegion(spriteSheet, 0, 55, 135, 24);
+		gameLogo = new TextureRegion(spriteSheet, 1, 56, 133, 19);
 		gameLogo.flip(false, true);
 
 		// LOADING INGAME ASSETS
@@ -54,13 +54,13 @@ public class AssetLoader {
 		grass = new TextureRegion(spriteSheet, 0, 43, 143, 11);
 		grass.flip(false, true);
 
-		birdDown = new TextureRegion(spriteSheet, 136, 0, 17, 12);
+		birdDown = new TextureRegion(spriteSheet, 3, 106, 27, 15);
 		birdDown.flip(false, true);
 
-		bird = new TextureRegion(spriteSheet, 153, 0, 17, 12);
+		bird = new TextureRegion(spriteSheet, 30, 106, 27, 15);
 		bird.flip(false, true);
 
-		birdUp = new TextureRegion(spriteSheet, 170, 0, 17, 12);
+		birdUp = new TextureRegion(spriteSheet, 59, 106, 27, 15);
 		birdUp.flip(false, true);
 
 		TextureRegion[] birds = { birdDown, bird, birdUp };

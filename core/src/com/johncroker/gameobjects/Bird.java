@@ -13,13 +13,14 @@ public class Bird {
 	private int width;
 	private int height;
 
-	private boolean isSlowmo = false;
-
 	private Circle hitBox;
 
 	private boolean isAlive;
 
 	private float originalY;
+
+	private boolean isBoosting = false;
+	private float boostDir = 0;
 
 	public Bird(float x, float y, int width, int height) {
 		this.width = width;
@@ -30,20 +31,16 @@ public class Bird {
 		acceleration = new Vector2(0, 460);
 		hitBox = new Circle();
 		this.isAlive = true;
+
 	}
 
 	public void update(float delta) {
 
-		if (isSlowmo) {
-			if (velocity.y > 2) {
-				velocity.y -= 25;
-				if (velocity.y < 2) {
-					velocity.y = 2;
-				}
-			}
-		} else {
-			velocity.add(acceleration.cpy().scl(delta));
+		if (isBoosting) {
+			boostManager(delta);
 		}
+
+		velocity.add(acceleration.cpy().scl(delta));
 
 		if (velocity.y > 200) {
 			velocity.y = 200;
@@ -75,6 +72,11 @@ public class Bird {
 				rotation = 90;
 			}
 		}
+	}
+
+	private void boostManager(float delta) {
+		// TODO
+
 	}
 
 	public void onRestart(int y) {
@@ -146,13 +148,9 @@ public class Bird {
 		return rotation;
 	}
 
-	public void setSlowmo(boolean state) {
-		isSlowmo = state;
-	}
-
-	public void boost(Vector2 boostDirection) {
-		// TODO Auto-generated method stub
-
+	public void boost(float y) {
+		boostDir = y;
+		isBoosting = true;
 	}
 
 }

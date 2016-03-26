@@ -22,17 +22,11 @@ public class InputHandler implements GestureListener, InputProcessor {
 	private float scaleFactorX;
 	private float scaleFactorY;
 
-	private Vector2 boostDirection;
-	private boolean isAiming;
-
 	public InputHandler(GameWorld wi, float scaleFactorX, float scaleFactorY) {
 		this.worldInstance = wi;
 		bird = worldInstance.getBird();
 
 		int midPointY = worldInstance.getMidPointY();
-
-		boostDirection = new Vector2(0, 0);
-		isAiming = false;
 
 		this.scaleFactorX = scaleFactorX;
 		this.scaleFactorY = scaleFactorY;
@@ -76,13 +70,13 @@ public class InputHandler implements GestureListener, InputProcessor {
 				return true;
 			}
 		} else if (worldInstance.isRunning()) {
-
-			worldInstance.setSlowmo(false);
-
-			bird.onClick();
+			if (worldInstance.isAiming()) {
+				worldInstance.boost();
+			} else {
+				bird.onClick();
+			}
 
 			return true;
-
 		}
 
 		return false;
@@ -90,14 +84,13 @@ public class InputHandler implements GestureListener, InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-
 		return false;
 	}
 
 	@Override
 	public boolean longPress(float x, float y) {
 		if (worldInstance.isRunning()) {
-			worldInstance.setSlowmo(true);
+			worldInstance.aiming();
 			return true;
 		}
 

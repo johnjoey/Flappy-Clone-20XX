@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.johncroker.fchelpers.AssetLoader;
 import com.johncroker.fchelpers.InputHandler;
@@ -87,7 +89,7 @@ public class GameRenderer {
 		sr.begin(ShapeType.Filled);
 
 		// Draw Background color
-		sr.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
+		sr.setColor(183 / 255.0f, 210 / 255.0f, 246 / 255.0f, 1);
 		sr.rect(0, 0, 136, midPointY + 66);
 
 		// Draw Grass
@@ -112,8 +114,8 @@ public class GameRenderer {
 
 		if (worldInstance.isRunning()) {
 			drawBird(runTime);
-			// drawAimingVector(worldInstance.getBoostDirection());
 			drawScore();
+			drawAimingVector();
 			// drawUI();
 		} else if (worldInstance.isReady()) {
 			drawBird(runTime);
@@ -135,19 +137,20 @@ public class GameRenderer {
 		drawTransition(delta);
 	}
 
-	/*
-	 * private void drawAimingVector(Vector2 boostDirection) { if
-	 * (worldInstance.isAiming()) { sr.begin(ShapeType.Line);
-	 * 
-	 * sr.setColor(Color.RED); sr.line(bird.getPos(),
-	 * worldInstance.getBoostDirection()); Gdx.app.log("GameRenderer",
-	 * "boost dir (" + worldInstance.getBoostDirection().x + ", " +
-	 * worldInstance.getBoostDirection().y + ")");
-	 * 
-	 * sr.end(); }
-	 * 
-	 * }
-	 */
+	private void drawAimingVector() {
+		if (worldInstance.isAiming()) {
+
+			batcher.disableBlending();
+			sr.begin(ShapeType.Line);
+			sr.setColor(Color.RED);
+			sr.line(new Vector2(bird.getX() + 9, bird.getY() + 6), worldInstance.getBoostDir());
+			sr.end();
+			batcher.enableBlending();
+
+		}
+
+	}
+
 	private void drawTransition(float delta) {
 		if (alpha.getValue() > 0) {
 			manager.update(delta);

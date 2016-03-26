@@ -15,10 +15,11 @@ public class GameWorld {
 	private float runTime = 0;
 	private int midPointY;
 
-	private boolean isSlowmo = false;
 	private boolean isAiming = false;
-	private boolean isBoosting = false;
-	private Vector2 boostDirection;
+	private float boostAngle = 0;
+	private boolean aimingUp = false;
+	private Vector2 boostDir = new Vector2(0, 0);
+	private float boostDistance = 50;
 
 	public enum GameState {
 		MENU, READY, RUNNING, GAMEOVER, HIGHSCORE;
@@ -32,7 +33,7 @@ public class GameWorld {
 		bird = new Bird(33, midPointY - 5, 17, 12);
 		scroller = new ScrollHandler(midPointY + 66, this);
 		ground = new Rectangle(0, midPointY + 66, 136, 11);
-		boostDirection = new Vector2(0, 0);
+
 	}
 
 	public void update(float delta) {
@@ -60,6 +61,23 @@ public class GameWorld {
 		if (delta > .15f)
 			delta = .15f;
 
+		if (isAiming) {
+			if (aimingUp) {
+				boostAngle -= 0.02;
+				if (boostAngle < -0.3) {
+					aimingUp = false;
+				}
+			} else {
+				boostAngle += 0.02;
+				if (boostAngle > 0.5) {
+					aimingUp = true;
+				}
+			}
+			// TODO boostDir from bird pos and aiming angle
+			setBoostVector(boostAngle, boostDistance, bird.getPos());
+
+		}
+
 		bird.update(delta);
 		scroller.update(delta);
 
@@ -82,6 +100,10 @@ public class GameWorld {
 				currentState = GameState.HIGHSCORE;
 			}
 		}
+	}
+
+	private void setBoostVector(float angle, float distance, Vector2 origin) {
+		boostDir.set((float) (distance * Math.cos(angle)), (float) (distance * Math.sin(angle))).add(origin);
 	}
 
 	public boolean isHighScore() {
@@ -140,12 +162,22 @@ public class GameWorld {
 		score += increment;
 	}
 
-	public void setSlowmo(boolean state) {
-		this.isSlowmo = state;
+	public void aiming() {
+		this.isAiming = true;
 	}
 
-	public boolean isSlowmo() {
-		return isSlowmo;
+	public boolean isAiming() {
+		return isAiming;
+	}
+
+	public Vector2 getBoostDir() {
+		return boostDir;
+	}
+
+	public void boost() {
+		isAiming = false; // turn on slowmotion and aiming vector
+		scroller.boost();
+		bird.boost(boostDir.y);
 	}
 
 }
