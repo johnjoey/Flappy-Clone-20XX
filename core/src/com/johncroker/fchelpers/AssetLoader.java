@@ -11,8 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 	public static Texture spriteSheet, kiloboltLogoSprite;
-	public static TextureRegion gameLogo, kiloboltLogo, playButtonUp, playButtonDown, boostButtonUp, boostButtonDown,
-			bg, grass, skullUp, skullDown, pipeBody, bird, birdDown, birdUp;
+	public static TextureRegion gameLogo, kiloboltLogo, playButtonUp, playButtonDown, bg, grass, skullUp, skullDown,
+			pipeBody, bird, birdDown, birdUp;
 
 	public static Animation birdAnimation;
 
@@ -37,11 +37,6 @@ public class AssetLoader {
 		playButtonDown = new TextureRegion(spriteSheet, 30, 85, 28, 12);
 		playButtonUp.flip(false, true);
 		playButtonDown.flip(false, true);
-
-		boostButtonUp = new TextureRegion(spriteSheet, 58, 83, 29, 16);
-		boostButtonDown = new TextureRegion(spriteSheet, 87, 83, 29, 16);
-		boostButtonUp.flip(false, true);
-		boostButtonDown.flip(false, true);
 
 		gameLogo = new TextureRegion(spriteSheet, 1, 56, 133, 19);
 		gameLogo.flip(false, true);

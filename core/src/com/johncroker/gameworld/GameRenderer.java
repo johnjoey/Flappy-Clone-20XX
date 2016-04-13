@@ -5,7 +5,6 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.johncroker.fchelpers.AssetLoader;
 import com.johncroker.fchelpers.InputHandler;
@@ -44,14 +42,12 @@ public class GameRenderer {
 	private ScrollHandler scroller;
 	private Grass frontGrass, backGrass;
 	private Pipe pipe1, pipe2, pipe3;
-	private Button boostButton;
 
 	// GAME ASSETS
 	private TextureRegion bg, grass;
 	private Animation birdAnimation;
 	private TextureRegion birdMid, birdDown, birdUp;
 	private TextureRegion skullUp, skullDown, pipeBody;
-	private TextureRegion boostButtonUp, boostButtonDown;
 
 	// TWEEN CRAP
 	private TweenManager manager;
@@ -115,39 +111,60 @@ public class GameRenderer {
 		if (worldInstance.isRunning()) {
 			drawBird(runTime);
 			drawScore();
-			drawAimingVector();
-			// drawUI();
+
 		} else if (worldInstance.isReady()) {
 			drawBird(runTime);
 			drawScore();
-			// drawUI();
+			drawStartPrompt();
 		} else if (worldInstance.isMenu()) {
 			drawBirdCentered(runTime);
 			drawMenuUI();
 		} else if (worldInstance.isGameOver()) {
 			drawBird(runTime);
 			drawScore();
-			// drawUI();
+			drawGameOverPrompt();
 		} else if (worldInstance.isHighScore()) {
 			drawBird(runTime);
 			drawScore();
+			drawNewHighScore();
 		}
 
 		batcher.end();
 		drawTransition(delta);
 	}
 
-	private void drawAimingVector() {
-		if (worldInstance.isAiming()) {
+	private void drawNewHighScore() {
+		AssetLoader.shadow.draw(batcher, "HIGH SCORE!", 19, 56);
+		AssetLoader.font.draw(batcher, "HIGH SCORE!", 18, 55);
 
-			batcher.disableBlending();
-			sr.begin(ShapeType.Line);
-			sr.setColor(Color.RED);
-			sr.line(new Vector2(bird.getX() + 9, bird.getY() + 6), worldInstance.getBoostDir());
-			sr.end();
-			batcher.enableBlending();
+		AssetLoader.shadow.draw(batcher, "Try again?", 23, 96);
+		AssetLoader.font.draw(batcher, "Try again?", 24, 95);
+	}
 
-		}
+	private void drawGameOverPrompt() {
+		AssetLoader.shadow.draw(batcher, "Game Over", 25, 56);
+		AssetLoader.font.draw(batcher, "Game Over", 24, 55);
+
+		AssetLoader.shadow.draw(batcher, "Try again?", 23, 76);
+		AssetLoader.font.draw(batcher, "Try again?", 24, 75);
+
+		AssetLoader.shadow.draw(batcher, "High Score:", 23, 106);
+		AssetLoader.font.draw(batcher, "High Score:", 22, 105);
+
+		String highScore = AssetLoader.getHighScore() + "";
+
+		// Draw shadow first
+		AssetLoader.shadow.draw(batcher, highScore, (136 / 2) - (3 * highScore.length()), 128);
+		// Draw text
+		AssetLoader.font.draw(batcher, highScore, (136 / 2) - (3 * highScore.length() - 1), 127);
+
+	}
+
+	private void drawStartPrompt() {
+		// Draw shadow first
+		AssetLoader.shadow.draw(batcher, "Touch me", 26, 76);
+		// Draw text
+		AssetLoader.font.draw(batcher, "Touch me", 25, 75);
 
 	}
 
@@ -192,8 +209,6 @@ public class GameRenderer {
 		skullUp = AssetLoader.skullUp;
 		skullDown = AssetLoader.skullDown;
 		pipeBody = AssetLoader.pipeBody;
-		boostButtonUp = AssetLoader.boostButtonUp;
-		boostButtonDown = AssetLoader.boostButtonDown;
 	}
 
 	private void drawGrass() {

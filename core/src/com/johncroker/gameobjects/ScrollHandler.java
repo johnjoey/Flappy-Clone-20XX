@@ -8,16 +8,8 @@ public class ScrollHandler {
 	private Pipe pipe1, pipe2, pipe3;
 	private GameWorld worldInstance;
 
-	public static final int BOOST_SPEED = -200;
 	public static final int SCROLL_SPEED = -59;
 	public static final int PIPE_GAP = 49;
-
-	public enum BoostStates {
-		START, BOOSTING, OFF;
-	}
-
-	private BoostStates boostState;
-	private float boostTime = 0;
 
 	public ScrollHandler(float yPos, GameWorld wi) {
 		this.worldInstance = wi;
@@ -27,8 +19,6 @@ public class ScrollHandler {
 		pipe1 = new Pipe(210, 0, 22, 60, SCROLL_SPEED, yPos);
 		pipe2 = new Pipe(pipe1.getTailX() + PIPE_GAP, 0, 22, 70, SCROLL_SPEED, yPos);
 		pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED, yPos);
-
-		boostState = BoostStates.OFF;
 	}
 
 	public void updateReady(float delta) {
@@ -42,8 +32,6 @@ public class ScrollHandler {
 	}
 
 	public void update(float delta) {
-
-		boostManager(delta);
 
 		grass1.update(delta);
 		grass2.update(delta);
@@ -73,35 +61,6 @@ public class ScrollHandler {
 		pipe1.stop();
 		pipe2.stop();
 		pipe3.stop();
-	}
-
-	private void boostManager(float delta) {
-		switch (boostState) {
-		case START:
-			grass1.setVelocity(BOOST_SPEED);
-			grass2.setVelocity(BOOST_SPEED);
-			pipe1.setVelocity(BOOST_SPEED);
-			pipe2.setVelocity(BOOST_SPEED);
-			pipe3.setVelocity(BOOST_SPEED);
-
-			boostState = BoostStates.BOOSTING;
-			break;
-		case BOOSTING:
-			boostTime += delta;
-			if (boostTime > 0.2f) {
-				grass1.setVelocity(SCROLL_SPEED);
-				grass2.setVelocity(SCROLL_SPEED);
-				pipe1.setVelocity(SCROLL_SPEED);
-				pipe2.setVelocity(SCROLL_SPEED);
-				pipe3.setVelocity(SCROLL_SPEED);
-
-				boostTime = 0;
-				boostState = BoostStates.OFF;
-			}
-		case OFF:
-		default:
-			break;
-		}
 	}
 
 	public boolean collides(Bird bird) {
@@ -154,10 +113,6 @@ public class ScrollHandler {
 
 	public Pipe getPipe3() {
 		return pipe3;
-	}
-
-	public void boost() {
-		boostState = BoostStates.START;
 	}
 
 }

@@ -13,7 +13,7 @@ public class GameScreen implements Screen {
 	private GameWorld world;
 	private GameRenderer renderer;
 	private float runTime = 0;
-	public static final float slowmoSpeed = 0.05f;
+	// public static final float slowmoSpeed = 0.05f;
 	public static final float boostSpeed = 1.5f;
 
 	public GameScreen() {
@@ -50,10 +50,6 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		runTime += delta;
-
-		if (world.isAiming()) {
-			delta *= slowmoSpeed;
-		}
 
 		world.update(delta);
 		renderer.render(delta, runTime);

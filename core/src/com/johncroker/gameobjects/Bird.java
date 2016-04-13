@@ -6,8 +6,8 @@ import com.johncroker.fchelpers.AssetLoader;
 
 public class Bird {
 	private Vector2 position;
-	private Vector2 velocity;
-	private Vector2 acceleration;
+	private Vector2 velocity; // '' #velocityformen''
+	private Vector2 acceleration; // #accelerationformen
 
 	private float rotation;
 	private int width;
@@ -18,9 +18,6 @@ public class Bird {
 	private boolean isAlive;
 
 	private float originalY;
-
-	private boolean isBoosting = false;
-	private float boostDir = 0;
 
 	public Bird(float x, float y, int width, int height) {
 		this.width = width;
@@ -35,10 +32,6 @@ public class Bird {
 	}
 
 	public void update(float delta) {
-
-		if (isBoosting) {
-			boostManager(delta);
-		}
 
 		velocity.add(acceleration.cpy().scl(delta));
 
@@ -72,11 +65,6 @@ public class Bird {
 				rotation = 90;
 			}
 		}
-	}
-
-	private void boostManager(float delta) {
-		// TODO
-
 	}
 
 	public void onRestart(int y) {
@@ -146,11 +134,6 @@ public class Bird {
 
 	public float getRotation() {
 		return rotation;
-	}
-
-	public void boost(float y) {
-		boostDir = y;
-		isBoosting = true;
 	}
 
 }

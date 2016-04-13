@@ -17,7 +17,6 @@ public class InputHandler implements GestureListener, InputProcessor {
 	private List<Button> menuButtons;
 
 	private Button playButton;
-	private Button boostButton;
 
 	private float scaleFactorX;
 	private float scaleFactorY;
@@ -34,11 +33,8 @@ public class InputHandler implements GestureListener, InputProcessor {
 		menuButtons = new ArrayList<Button>();
 		playButton = new Button(136 / 2 - (AssetLoader.playButtonUp.getRegionWidth() / 2), midPointY + 50, 29, 16,
 				AssetLoader.playButtonUp, AssetLoader.playButtonDown);
-		boostButton = new Button(136 / 2 - (AssetLoader.boostButtonUp.getRegionWidth() / 2), midPointY + 70, 29, 16,
-				AssetLoader.boostButtonUp, AssetLoader.boostButtonDown);
 
 		menuButtons.add(playButton);
-		menuButtons.add(boostButton);
 
 	}
 
@@ -70,12 +66,7 @@ public class InputHandler implements GestureListener, InputProcessor {
 				return true;
 			}
 		} else if (worldInstance.isRunning()) {
-			if (worldInstance.isAiming()) {
-				worldInstance.boost();
-			} else {
-				bird.onClick();
-			}
-
+			bird.onClick();
 			return true;
 		}
 
@@ -89,11 +80,6 @@ public class InputHandler implements GestureListener, InputProcessor {
 
 	@Override
 	public boolean longPress(float x, float y) {
-		if (worldInstance.isRunning()) {
-			worldInstance.aiming();
-			return true;
-		}
-
 		return false;
 
 	}
