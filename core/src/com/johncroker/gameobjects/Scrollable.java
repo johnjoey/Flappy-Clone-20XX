@@ -61,4 +61,5 @@ public class Scrollable {
 	public void setVelocity(float scrollSpeed) {
 		velocity.x = scrollSpeed;
 	}
+
 }

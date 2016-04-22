@@ -2,6 +2,7 @@ package com.johncroker.fchelpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -12,11 +13,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class AssetLoader {
 	public static Texture spriteSheet, kiloboltLogoSprite;
 	public static TextureRegion gameLogo, kiloboltLogo, playButtonUp, playButtonDown, bg, grass, skullUp, skullDown,
-			pipeBody, bird, birdDown, birdUp;
+			pipeBody, bird, birdDown, birdUp, enemy, enemyDown, enemyUp;
 
-	public static Animation birdAnimation;
+	public static Animation birdAnimation, enemyAnimation;
 
 	public static Sound dead, coin, flap, fall;
+
+	public static Music music;
 
 	public static BitmapFont font, shadow;
 
@@ -62,6 +65,19 @@ public class AssetLoader {
 		birdAnimation = new Animation(0.06f, birds);
 		birdAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
+		enemyDown = new TextureRegion(spriteSheet, 136, 0, 16, 12);
+		enemyDown.flip(false, true);
+
+		enemy = new TextureRegion(spriteSheet, 153, 0, 16, 12);
+		enemy.flip(false, true);
+
+		enemyUp = new TextureRegion(spriteSheet, 170, 0, 16, 12);
+		enemyUp.flip(false, true);
+
+		TextureRegion[] enemies = { enemyDown, enemy, enemyUp };
+		enemyAnimation = new Animation(0.06f, enemies);
+		enemyAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
+
 		skullUp = new TextureRegion(spriteSheet, 192, 0, 24, 14);
 		skullDown = new TextureRegion(skullUp);
 		skullUp.flip(false, true);
@@ -73,6 +89,9 @@ public class AssetLoader {
 		flap = Gdx.audio.newSound(Gdx.files.internal("data/flap.wav"));
 		coin = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
 		fall = Gdx.audio.newSound(Gdx.files.internal("data/fall.wav"));
+
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/music.ogg"));
+		music.setLooping(true);
 
 		font = new BitmapFont(Gdx.files.internal("data/text.fnt"));
 		font.getData().setScale(.25f, -.25f);

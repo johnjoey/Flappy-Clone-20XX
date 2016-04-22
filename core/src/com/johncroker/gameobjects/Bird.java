@@ -6,12 +6,16 @@ import com.johncroker.fchelpers.AssetLoader;
 
 public class Bird {
 	private Vector2 position;
-	private Vector2 velocity; // '' #velocityformen''
-	private Vector2 acceleration; // #accelerationformen
+	private Vector2 velocity;
+	private Vector2 acceleration;
 
 	private float rotation;
 	private int width;
 	private int height;
+
+	private int lives;
+	private boolean invul = false;
+	private float invulTime = 0;
 
 	private Circle hitBox;
 
@@ -28,10 +32,18 @@ public class Bird {
 		acceleration = new Vector2(0, 460);
 		hitBox = new Circle();
 		this.isAlive = true;
-
+		lives = 3;
 	}
 
 	public void update(float delta) {
+
+		if (invul) {
+			invulTime += delta;
+			if (invulTime > 2.0f) {
+				invulTime = 0;
+				invul = false;
+			}
+		}
 
 		velocity.add(acceleration.cpy().scl(delta));
 
@@ -75,6 +87,7 @@ public class Bird {
 		acceleration.x = 0;
 		acceleration.y = 460;
 		isAlive = true;
+		lives = 3;
 	}
 
 	public Circle getHitBox() {
@@ -134,6 +147,28 @@ public class Bird {
 
 	public float getRotation() {
 		return rotation;
+	}
+
+	public boolean hasLives() {
+		if (lives > 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void loseLife() {
+		lives--;
+		invul = true;
+	}
+
+	public boolean isInvul() {
+		return invul;
+
+	}
+
+	public void setInvul(boolean state) {
+		invul = state;
 	}
 
 }

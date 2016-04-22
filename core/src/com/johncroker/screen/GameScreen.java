@@ -13,8 +13,6 @@ public class GameScreen implements Screen {
 	private GameWorld world;
 	private GameRenderer renderer;
 	private float runTime = 0;
-	// public static final float slowmoSpeed = 0.05f;
-	public static final float boostSpeed = 1.5f;
 
 	public GameScreen() {
 		Gdx.app.log("GameScreen", "constructor");
@@ -23,7 +21,7 @@ public class GameScreen implements Screen {
 		float screenHeight = Gdx.graphics.getHeight();
 		float gameWidth = 136;
 		float gameHeight = screenHeight / (screenWidth / gameWidth);
-
+		Gdx.app.log("dimensions:", screenWidth + " " + screenHeight + " " + gameWidth + " " + gameHeight);
 		int midPointY = (int) (gameHeight / 2);
 
 		world = new GameWorld(midPointY);

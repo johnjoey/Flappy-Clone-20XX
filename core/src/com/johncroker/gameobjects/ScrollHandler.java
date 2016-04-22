@@ -6,6 +6,7 @@ import com.johncroker.gameworld.GameWorld;
 public class ScrollHandler {
 	private Grass grass1, grass2;
 	private Pipe pipe1, pipe2, pipe3;
+	private Enemy enemy1, enemy2, enemy3;
 	private GameWorld worldInstance;
 
 	public static final int SCROLL_SPEED = -59;
@@ -19,6 +20,10 @@ public class ScrollHandler {
 		pipe1 = new Pipe(210, 0, 22, 60, SCROLL_SPEED, yPos);
 		pipe2 = new Pipe(pipe1.getTailX() + PIPE_GAP, 0, 22, 70, SCROLL_SPEED, yPos);
 		pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED, yPos);
+
+		enemy1 = new Enemy(250, 0, 16, 12, SCROLL_SPEED - 70);
+		enemy2 = new Enemy(210, 50, 16, 12, SCROLL_SPEED - 70);
+		enemy3 = new Enemy(230, 100, 16, 12, SCROLL_SPEED - 70);
 	}
 
 	public void updateReady(float delta) {
@@ -40,6 +45,10 @@ public class ScrollHandler {
 		pipe2.update(delta);
 		pipe3.update(delta);
 
+		enemy1.update(delta);
+		enemy2.update(delta);
+		enemy3.update(delta);
+
 		if (pipe1.isOffScreen()) {
 			pipe1.reset(pipe3.getTailX() + PIPE_GAP);
 		} else if (pipe2.isOffScreen()) {
@@ -53,6 +62,14 @@ public class ScrollHandler {
 		} else if (grass2.isOffScreen()) {
 			grass2.reset(grass1.getTailX());
 		}
+
+		if (enemy1.isOffScreen()) {
+			enemy1.reset(210);
+		} else if (enemy2.isOffScreen()) {
+			enemy2.reset(210);
+		} else if (enemy3.isOffScreen()) {
+			enemy3.reset(210);
+		}
 	}
 
 	public void stop() {
@@ -61,6 +78,7 @@ public class ScrollHandler {
 		pipe1.stop();
 		pipe2.stop();
 		pipe3.stop();
+
 	}
 
 	public boolean collides(Bird bird) {
@@ -80,7 +98,8 @@ public class ScrollHandler {
 
 		}
 
-		return (pipe1.collides(bird) || pipe2.collides(bird) || pipe3.collides(bird));
+		return (pipe1.collides(bird) || pipe2.collides(bird) || pipe3.collides(bird) || enemy1.collides(bird)
+				|| enemy2.collides(bird) || enemy3.collides(bird));
 	}
 
 	public void onRestart() {
@@ -89,6 +108,9 @@ public class ScrollHandler {
 		pipe1.onRestart(210, SCROLL_SPEED);
 		pipe2.onRestart(pipe1.getTailX() + PIPE_GAP, SCROLL_SPEED);
 		pipe3.onRestart(pipe2.getTailX() + PIPE_GAP, SCROLL_SPEED);
+		enemy1.reset(210);
+		enemy2.reset(210);
+		enemy3.reset(210);
 	}
 
 	private void addScore(int increment) {
@@ -113,6 +135,18 @@ public class ScrollHandler {
 
 	public Pipe getPipe3() {
 		return pipe3;
+	}
+
+	public Enemy getEnemy1() {
+		return enemy1;
+	}
+
+	public Enemy getEnemy2() {
+		return enemy2;
+	}
+
+	public Enemy getEnemy3() {
+		return enemy3;
 	}
 
 }

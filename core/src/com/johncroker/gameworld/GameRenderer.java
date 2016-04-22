@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.johncroker.fchelpers.AssetLoader;
 import com.johncroker.fchelpers.InputHandler;
 import com.johncroker.gameobjects.Bird;
+import com.johncroker.gameobjects.Enemy;
 import com.johncroker.gameobjects.Grass;
 import com.johncroker.gameobjects.Pipe;
 import com.johncroker.gameobjects.ScrollHandler;
@@ -42,11 +43,14 @@ public class GameRenderer {
 	private ScrollHandler scroller;
 	private Grass frontGrass, backGrass;
 	private Pipe pipe1, pipe2, pipe3;
+	private Enemy enemy1, enemy2, enemy3;
 
 	// GAME ASSETS
 	private TextureRegion bg, grass;
 	private Animation birdAnimation;
 	private TextureRegion birdMid, birdDown, birdUp;
+	private Animation enemyAnimation;
+	private TextureRegion enemyMid, enemyDown, enemyUp;
 	private TextureRegion skullUp, skullDown, pipeBody;
 
 	// TWEEN CRAP
@@ -55,6 +59,9 @@ public class GameRenderer {
 
 	// BUTTONS
 	private List<Button> menuButtons;
+
+	// BIRD INVUL FLASH
+	private boolean invulFlash = false;
 
 	public GameRenderer(GameWorld world, int gameHeight, int midPointY) {
 		worldInstance = world;
@@ -110,8 +117,8 @@ public class GameRenderer {
 
 		if (worldInstance.isRunning()) {
 			drawBird(runTime);
+			drawEnemies(runTime);
 			drawScore();
-
 		} else if (worldInstance.isReady()) {
 			drawBird(runTime);
 			drawScore();
@@ -197,6 +204,10 @@ public class GameRenderer {
 		pipe1 = scroller.getPipe1();
 		pipe2 = scroller.getPipe2();
 		pipe3 = scroller.getPipe3();
+
+		enemy1 = scroller.getEnemy1();
+		enemy2 = scroller.getEnemy2();
+		enemy3 = scroller.getEnemy3();
 	}
 
 	private void initAssets() {
@@ -206,6 +217,10 @@ public class GameRenderer {
 		birdMid = AssetLoader.bird;
 		birdUp = AssetLoader.birdUp;
 		birdDown = AssetLoader.birdDown;
+		enemyAnimation = AssetLoader.enemyAnimation;
+		enemyMid = AssetLoader.enemy;
+		enemyUp = AssetLoader.enemyUp;
+		enemyDown = AssetLoader.enemyDown;
 		skullUp = AssetLoader.skullUp;
 		skullDown = AssetLoader.skullDown;
 		pipeBody = AssetLoader.pipeBody;
@@ -250,20 +265,40 @@ public class GameRenderer {
 	}
 
 	private void drawBird(float runTime) {
+		if (bird.isInvul()) {
+			if (invulFlash) {
+				invulFlash = false;
+			} else {
+				if (bird.stopAnimation()) {
+					batcher.draw(birdMid, bird.getX(), bird.getY(), bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,
+							bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
+				} else {
+					batcher.draw(birdAnimation.getKeyFrame(runTime), bird.getX(), bird.getY(), bird.getWidth() / 2.0f,
+							bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
 
-		if (bird.stopAnimation()) {
-			batcher.draw(birdMid, bird.getX(), bird.getY(), bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,
-					bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
-
+				}
+				invulFlash = true;
+			}
 		} else {
-			batcher.draw(birdAnimation.getKeyFrame(runTime), bird.getX(), bird.getY(), bird.getWidth() / 2.0f,
-					bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
+			if (bird.stopAnimation()) {
+				batcher.draw(birdMid, bird.getX(), bird.getY(), bird.getWidth() / 2.0f, bird.getHeight() / 2.0f,
+						bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
+			} else {
+				batcher.draw(birdAnimation.getKeyFrame(runTime), bird.getX(), bird.getY(), bird.getWidth() / 2.0f,
+						bird.getHeight() / 2.0f, bird.getWidth(), bird.getHeight(), 1, 1, bird.getRotation());
+
+			}
 		}
 
 	}
 
-	private void drawUI() {
-		menuButtons.get(1).draw(batcher);
+	private void drawEnemies(float runTime) {
+		batcher.draw(enemyAnimation.getKeyFrame(runTime), enemy1.getX(), enemy1.getY(), enemy1.getWidth() / 2.0f,
+				enemy1.getHeight() / 2.0f, enemy1.getWidth(), enemy1.getHeight(), 1, 1, 0);
+		batcher.draw(enemyAnimation.getKeyFrame(runTime), enemy2.getX(), enemy2.getY(), enemy2.getWidth() / 2.0f,
+				enemy2.getHeight() / 2.0f, enemy2.getWidth(), enemy2.getHeight(), 1, 1, 0);
+		batcher.draw(enemyAnimation.getKeyFrame(runTime), enemy3.getX(), enemy3.getY(), enemy3.getWidth() / 2.0f,
+				enemy3.getHeight() / 2.0f, enemy3.getWidth(), enemy3.getHeight(), 1, 1, 0);
 	}
 
 	private void drawMenuUI() {

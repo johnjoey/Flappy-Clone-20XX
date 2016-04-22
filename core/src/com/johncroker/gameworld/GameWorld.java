@@ -58,15 +58,22 @@ public class GameWorld {
 		scroller.update(delta);
 
 		if (bird.isAlive() && scroller.collides(bird)) {
-			scroller.stop();
-			bird.die();
-			AssetLoader.dead.play();
-
-			AssetLoader.fall.play();
+			if (!bird.isInvul()) {
+				if (bird.hasLives()) {
+					AssetLoader.dead.play();
+					bird.loseLife();
+				} else {
+					scroller.stop();
+					bird.die();
+					AssetLoader.dead.play();
+					AssetLoader.fall.play();
+				}
+			}
 		}
 
 		if (Intersector.overlaps(bird.getHitBox(), ground)) {
 			scroller.stop();
+			bird.setInvul(false);
 			bird.die();
 			bird.decelerate();
 			currentState = GameState.GAMEOVER;
@@ -104,6 +111,7 @@ public class GameWorld {
 
 	public void start() {
 		currentState = GameState.RUNNING;
+		AssetLoader.music.play();
 	}
 
 	public void ready() {
@@ -115,7 +123,7 @@ public class GameWorld {
 		score = 0;
 		bird.onRestart(midPointY - 5);
 		scroller.onRestart();
-		currentState = GameState.READY;
+		AssetLoader.music.stop();
 	}
 
 	public Bird getBird() {
